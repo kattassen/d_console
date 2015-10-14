@@ -48,8 +48,17 @@ def main():
         time.sleep(0.1)
 
         # Check all buttons and store values
+        btnPressed = False
         for btn in btnList:
-            colorDict[btn.color] = btn.getStatus()
+            if btn.getStatus():
+                colorDict[btn.color] = True
+                btnPressed = True
+            else:
+                colorDict[btn.color] = False
+
+        # Start over if no button is pressed
+        if not btnPressed:
+            continue
 
         if DBG_LOG:
             print "Buttons satus: " + str(colorDict)
