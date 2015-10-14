@@ -1,4 +1,5 @@
 import time
+"""import RPi.GPIO as GPIO"""
 
 DBG_LOG = True
 
@@ -10,7 +11,13 @@ class ColorButton:
         self.pin = gpio_pin
         self.status = False
 
+        """
+        # Set gpio pin to input and activate pull down
+        GPIO.setup(gpio_pin, GPIO.in, pull_up_down=GPIO.PUD_DOWN)
+        """
+
     def getStatus(self):
+        """self.status = GPIO.input(self.pin)"""
         return self.status
 
 class ButtonLed:
@@ -21,8 +28,14 @@ class ButtonLed:
         self.pin = gpio_pin
         self.status = False
 
+        """
+        # Set gpio pin to output and
+        GPIO.setup(gpio_pin, GPIO.out)
+        """
+
     def setStatus(self, status):
         self.status = status
+        """GPIO.output(self.pin, status)"""
 
 def main():
     """Main function"""
