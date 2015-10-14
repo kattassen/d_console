@@ -44,7 +44,8 @@ def main():
                ButtonLed("yellow", 12)]
         
     while(True):
-        time.sleep(1)
+        # Main loop
+        time.sleep(0.1)
 
         # Check all buttons and store values
         for btn in btnList:
