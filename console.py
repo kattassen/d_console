@@ -45,17 +45,17 @@ def main():
                  "green" : 0,
                  "yellow" : 0}
 
-    btnList = [ColorButton("red", 11),
-               ColorButton("blue", 12),
-               ColorButton("green", 12),
-               ColorButton("yellow", 12),
-               ColorButton("white", 12)]
+    btnList = [ColorButton("red", 4),
+               ColorButton("blue", 17),
+               ColorButton("green", 27),
+               ColorButton("yellow", 22),
+               ColorButton("white", 10)]
 
-    ledList = [ButtonLed("red", 11),
-               ButtonLed("blue", 12),
-               ButtonLed("green", 12),
-               ButtonLed("yellow", 12)]
-        
+    ledList = [ButtonLed("red", 18),
+               ButtonLed("blue", 23),
+               ButtonLed("green", 24),
+               ButtonLed("yellow", 25)]
+
     while(True):
         # Main loop
         time.sleep(0.1)
