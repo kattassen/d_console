@@ -11,13 +11,11 @@ class ColorButton:
         self.pin = gpio_pin
         self.status = False
 
-        """
         # Set gpio pin to input and activate pull down
-        GPIO.setup(gpio_pin, GPIO.in, pull_up_down=GPIO.PUD_DOWN)
-        """
+        GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     def getStatus(self):
-        """self.status = GPIO.input(self.pin)"""
+        self.status = GPIO.input(self.pin)
         return self.status
 
 class ButtonLed:
@@ -28,17 +26,18 @@ class ButtonLed:
         self.pin = gpio_pin
         self.status = False
 
-        """
         # Set gpio pin to output and
-        GPIO.setup(gpio_pin, GPIO.out)
-        """
+        GPIO.setup(gpio_pin, GPIO.OUT)
 
     def setStatus(self, status):
         self.status = status
-        """GPIO.output(self.pin, status)"""
+        GPIO.output(self.pin, status)
 
 def main():
     """Main function"""
+
+    # Set GPIO numbering mode
+    GPIO.setmode(GPIO.BCM)
 
     colorDict = {"red" : 0,
                  "blue" : 0,
