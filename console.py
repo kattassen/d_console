@@ -1,5 +1,6 @@
 import time
-"""import RPi.GPIO as GPIO"""
+#import RPi.GPIO as GPIO
+import RPi_MOCK as GPIO
 
 DBG_LOG = True
 
