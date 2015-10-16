@@ -95,8 +95,10 @@ def main():
             print "Buttons satus: " + str(colorDict)
 
         # Set LED according to button status
-        for led in ledList:
-            led.setStatus(colorDict[btn.color])
+        for color in colorDict:
+            ledDict[color].setStatus(color)
+
+            lamp.setState(True, color, 100)
         
 if __name__ == "__main__":
     main()
