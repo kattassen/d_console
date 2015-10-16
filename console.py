@@ -34,16 +34,24 @@ class ButtonLed:
         self.status = status
         GPIO.output(self.pin, status)
 
+class HueLamp():
+    """Hue Lamp class"""
+    def __init__(self, url):
+        self.url = url
+
+    def get_state(self):
+        self.http_request("get")
+
+    def set_state(self, color, brightness):
+        self.http_request("put", json.dumps({'on':state, 'bri':100, 'hue':0, 'sat':100}))
+
+
+        
 def main():
     """Main function"""
 
     # Set GPIO numbering mode
     GPIO.setmode(GPIO.BCM)
-
-    colorDict = {"red" : 0,
-                 "blue" : 0,
-                 "green" : 0,
-                 "yellow" : 0}
 
     btnList = [ColorButton("red", 4),
                ColorButton("blue", 17),
@@ -61,16 +69,15 @@ def main():
         time.sleep(0.1)
 
         # Check all buttons and store values
-        btnPressed = False
+        colorDict = {}
         for btn in btnList:
             if btn.getStatus():
                 colorDict[btn.color] = True
-                btnPressed = True
             else:
                 colorDict[btn.color] = False
 
         # Start over if no button is pressed
-        if not btnPressed:
+        if len(colorDict) == 0:
             continue
 
         if DBG_LOG:
