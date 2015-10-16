@@ -1,6 +1,7 @@
 import time
 #import RPi.GPIO as GPIO
 import RPi_MOCK as GPIO
+import requests
 
 DBG_LOG = True
 
@@ -36,15 +37,23 @@ class ButtonLed:
 
 class HueLamp():
     """Hue Lamp class"""
+    HUE_COLORS = {"red" : 0,
+                  "yellow" : 12750,
+                  "green" : 25500,
+                  "blue" : 46920,
+                  "purple" : 56100}
     def __init__(self, url):
         self.url = url
 
-    def get_state(self):
+    def getState(self):
         self.http_request("get")
 
-    def set_state(self, color, brightness):
-        self.http_request("put", json.dumps({'on':state, 'bri':100, 'hue':0, 'sat':100}))
-
+    def setState(self, state, color, brightness):
+        d = {'on':state,
+             'bri':255,
+             'hue':self.HUE_COLORS[color],
+             'sat':255}
+        requests.put(self.url + "/state", data=d)
 
         
 def main():
@@ -63,6 +72,8 @@ def main():
                "blue" : ButtonLed("blue", 23),
                "green" : ButtonLed("green", 24),
                "yellow" : ButtonLed("yellow", 25)}
+
+    lamp = HueLamp("http://192.168.1.102/newdeveloper/ligths/3")
 
     while(True):
         # Main loop
