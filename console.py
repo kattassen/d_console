@@ -59,10 +59,10 @@ def main():
                ColorButton("yellow", 22),
                ColorButton("white", 10)]
 
-    ledList = [ButtonLed("red", 18),
-               ButtonLed("blue", 23),
-               ButtonLed("green", 24),
-               ButtonLed("yellow", 25)]
+    ledDict = {"red" : ButtonLed("red", 18),
+               "blue" : ButtonLed("blue", 23),
+               "green" : ButtonLed("green", 24),
+               "yellow" : ButtonLed("yellow", 25)}
 
     while(True):
         # Main loop
