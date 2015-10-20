@@ -2,6 +2,7 @@ import time
 #import RPi.GPIO as GPIO
 import RPi_MOCK as GPIO
 import requests
+import math
 
 DBG_LOG = True
 
@@ -37,22 +38,42 @@ class ButtonLed:
 
 class HueLamp():
     """Hue Lamp class"""
-    HUE_COLORS = {"red" : 0,
-                  "yellow" : 12750,
-                  "green" : 25500,
-                  "blue" : 46920,
-                  "purple" : 56100}
+    HUE_COLORS_DEG = {"red" : 0,
+                      "yellow" : 60,
+                      "green" : 120,
+                      "cyan" : 180,
+                      "blue" : 240,
+                      "purple" : 300}
     def __init__(self, url):
         self.url = url
 
     def getState(self):
         self.http_request("get")
 
-    def setState(self, state, color, brightness):
-        d = {'on':state,
-             'bri':255,
-             'hue':self.HUE_COLORS[color],
-             'sat':255}
+    def mixColors(self, colors):
+        if len(colors) == 1:
+            return self.HUE_COLORS_DEG[colors[0]]
+
+        mix = (self.HUE_COLORS_DEG[colors[0]] + self.HUE_COLORS_DEG[colors[1]])/2
+        return int(mix * (65535/360))
+
+    def setState(self, state, colorList, brightness):
+        if len(colorList) == 0:
+            return
+        elif len(colorList) > 2:
+            d = {'on':state,
+                 'bri':255,
+                 'hue':25000,
+                 'sat':255,
+                 'effect':"colorloop"}
+        else:
+            d = {'on':state,
+                 'bri':255,
+                 'hue':self.mixColors(colorList),
+                 'sat':255}
+
+        if DBG_LOG:
+            print d
         requests.put(self.url + "/state", data=d)
 
         
@@ -96,10 +117,14 @@ def main():
             print "Buttons satus: " + str(colorDict)
 
         # Set LED according to button status
-        for color in colorDict:
-            ledDict[color].setStatus(color)
+        colorList = []
+        for color, val in colorDict.items():
+            ledDict[color].setStatus(val)
 
-            lamp.setState(True, color, 100)
+            if val == True:
+                colorList.append(color)
+
+        lamp.setState(True, colorList, 100)
         
 if __name__ == "__main__":
     main()
