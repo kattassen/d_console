@@ -14,7 +14,7 @@ def setmode(mode):
 
 def input(pin):
     print "Check input GPIO pin %d" % (pin)
-    return True
+    return False
 
 def output(pin, state):
     print "Set output %r on GPIO pin %d" % (state, pin)

@@ -1,8 +1,12 @@
 import time
-#import RPi.GPIO as GPIO
-import RPi_MOCK as GPIO
 import requests
-import math
+
+DBG_MOCK = True
+if DBG_MOCK:
+    import RPi_MOCK as GPIO
+else:
+    import RPi.GPIO as GPIO
+
 
 DBG_LOG = True
 
@@ -19,6 +23,10 @@ class ColorButton:
 
     def getStatus(self):
         self.status = GPIO.input(self.pin)
+
+        if DBG_MOCK == True:
+            if self.color == "blue" or self.color == "green":
+                self.status = True
         return self.status
 
 class ButtonLed:
