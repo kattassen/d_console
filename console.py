@@ -71,7 +71,8 @@ def main():
     ledDict = {"red" : ButtonLed("red", 18),
                "blue" : ButtonLed("blue", 23),
                "green" : ButtonLed("green", 24),
-               "yellow" : ButtonLed("yellow", 25)}
+               "yellow" : ButtonLed("yellow", 25),
+               "white" : ButtonLed("white", 8)}
 
     lamp = HueLamp("http://192.168.1.102/newdeveloper/ligths/3")
 
