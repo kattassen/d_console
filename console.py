@@ -1,3 +1,11 @@
+# To be able to use the hue api a user must be registered first, it can be done with the following shell command:
+"""
+curl -H "Accept: application/json" -X POST --data '{"devicetype":"pi_app"}' http://192.168.1.103/api
+
+[{"success":{"username":"3cae0cad339cb36732cf4f6920ad5183"}}]
+"""
+
+import json
 import time
 import requests
 
@@ -9,6 +17,8 @@ else:
 
 
 DBG_LOG = True
+
+HUE_USER = "3cae0cad339cb36732cf4f6920ad5183"
 
 class ColorButton:
     """Class for handling of colorful buttons"""
@@ -103,7 +113,7 @@ def main():
                "yellow" : ButtonLed("yellow", 25),
                "white" : ButtonLed("white", 8)}
 
-    lamp = HueLamp("http://192.168.1.102/newdeveloper/ligths/3")
+    lamp = HueLamp("http://192.168.1.103/api/" + HUE_USER + "/lights/1")
 
     while(True):
         # Main loop
