@@ -86,13 +86,19 @@ class HueLamp():
                  'effect':"colorloop"}
         else:
             d = {'on':state,
-                 'bri':255,
+                 'bri':100,
                  'hue':self.mixColors(colorList),
                  'sat':255}
 
         if DBG_LOG:
-            print d
-        requests.put(self.url + "/state", data=d)
+            print "Set lamp state: " ,d
+
+        r = requests.put(self.url + "/state", data=json.dumps(d))
+
+        print self.url + "/state"
+        if r.status_code != 200:
+            print "Bad response %s from %s" % (r.status_code, self.url) 
+        print r.json()
 
         
 def main():
