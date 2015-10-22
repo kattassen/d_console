@@ -62,6 +62,7 @@ class HueLamp():
                       "cyan" : 180,
                       "blue" : 240,
                       "purple" : 300}
+    color = ""
     def __init__(self, url):
         self.url = url
 
@@ -85,9 +86,16 @@ class HueLamp():
                  'sat':255,
                  'effect':"colorloop"}
         else:
+            color = self.mixColors(colorList)
+            if color == self.color:
+                if DBG_LOG:
+                    print "No change in color, don't send to Hue"
+                return
+
+            self.color = color
             d = {'on':state,
                  'bri':100,
-                 'hue':self.mixColors(colorList),
+                 'hue':self.color,
                  'sat':255}
 
         if DBG_LOG:
