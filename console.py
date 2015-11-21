@@ -9,7 +9,7 @@ import json
 import time
 import requests
 
-DBG_MOCK = True
+DBG_MOCK = False
 if DBG_MOCK:
     import RPi_MOCK as GPIO
 else:
