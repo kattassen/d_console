@@ -133,16 +133,19 @@ def main():
         # Main loop
         time.sleep(0.1)
 
-        # Check all buttons and store values
         colorDict = {}
+
+        # Check all buttons and store values
+        pressed = False
         for btn in btnList:
             if btn.getStatus():
                 colorDict[btn.color] = True
+                pressed = True
             else:
                 colorDict[btn.color] = False
 
         # Start over if no button is pressed
-        if len(colorDict) == 0:
+        if pressed == False:
             continue
 
         if DBG_LOG:
