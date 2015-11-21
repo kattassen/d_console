@@ -47,12 +47,12 @@ class ButtonLed:
         self.pin = gpio_pin
         self.status = False
 
-        # Set gpio pin to output and
-        GPIO.setup(gpio_pin, GPIO.OUT)
+         # Set gpio pin to input and activate pull up
+        GPIO.setup(gpio_pin, GPIO.OUT, pull_up_down=GPIO.PUD_UP)
 
     def setStatus(self, status):
         self.status = status
-        GPIO.output(self.pin, status)
+        GPIO.output(self.pin, not self.status)
 
 class HueLamp():
     """Hue Lamp class"""
@@ -71,7 +71,7 @@ class HueLamp():
 
     def mixColors(self, colors):
         if len(colors) == 1:
-            return self.HUE_COLORS_DEG[colors[0]]
+            return int(self.HUE_COLORS_DEG[colors[0]] * (65535/360))
 
         mix = (self.HUE_COLORS_DEG[colors[0]] + self.HUE_COLORS_DEG[colors[1]])/2
         return int(mix * (65535/360))
