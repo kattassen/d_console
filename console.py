@@ -31,17 +31,25 @@ class ColorButton:
         # Set gpio pin to input and activate pull down
         GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-    def getStatus(self):
-        self.status = GPIO.input(self.pin)
-
+    # Check if button is pressed and return True if so
+    def poll(self):
         if DBG_MOCK == True:
             if self.color == "blue" or self.color == "green":
                 self.status = True
+                return True
+
+
+        if GPIO.input(self.pin) == True:
+            self.status = not self.status
+            return True
+        return False
+
+    def getStatus(self):
         return self.status
 
 class ButtonLed:
     """Class for handling of colorful led lights on the console"""
-    
+
     def __init__(self, color, gpio_pin):
         self.color = color
         self.pin = gpio_pin
@@ -105,10 +113,10 @@ class HueLamp():
 
         print self.url + "/state"
         if r.status_code != 200:
-            print "Bad response %s from %s" % (r.status_code, self.url) 
+            print "Bad response %s from %s" % (r.status_code, self.url)
         print r.json()
 
-        
+
 def main():
     """Main function"""
 
@@ -133,33 +141,25 @@ def main():
         # Main loop
         time.sleep(0.1)
 
-        colorDict = {}
-
-        # Check all buttons and store values
         pressed = False
         for btn in btnList:
-            if btn.getStatus():
-                colorDict[btn.color] = True
-                pressed = True
-            else:
-                colorDict[btn.color] = False
+            pressed = btn.poll() or pressed
 
         # Start over if no button is pressed
         if pressed == False:
             continue
 
-        if DBG_LOG:
-            print "Buttons satus: " + str(colorDict)
-
-        # Set LED according to button status
+        # Set button led value
         colorList = []
-        for color, val in colorDict.items():
-            ledDict[color].setStatus(val)
+        for btn in btnList:
+            color = btn.color
+            ledDict[btn.color].setStatus(btn.getStatus)
 
-            if val == True:
+            # Append this color to list of colors
+            if btn.getStatus:
                 colorList.append(color)
 
         lamp.setState(True, colorList, 100)
-        
+
 if __name__ == "__main__":
     main()
